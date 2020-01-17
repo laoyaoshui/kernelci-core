@@ -48,20 +48,22 @@ import org.kernelci.util.Job
 def checkConfig(config, kci_core, trees_dir) {
     def commit = sh(
         script: """
+
 ${kci_core}/kci_build \
 --yaml-configs=${kci_core}/build-configs.yaml \
 check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
 """, returnStdout: true).trim()
-
+    echo "=======yypp 20000 "+kci_core
     if (!commit) {
+        echo "=======yypp 20001 "
         print("${config}: no new commit")
         return
     }
 
     print("${config}: triggering build")
-
+    echo "=======yypp 20002 " 
     def job = "kernel-build-trigger"
     def str_params = [
         'BUILD_CONFIG': config,
@@ -69,8 +71,10 @@ check_new_commit \
     def job_params = []
     def j = new Job()
     j.addStrParams(job_params, str_params)
+    echo "=======yypp 20003 " 
 
     build(job: job, parameters: job_params, propagate: false, wait: false)
+    echo "=======yypp 20004 " 
 }
 
 node() {
