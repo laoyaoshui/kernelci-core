@@ -1,0 +1,19 @@
+- test:
+    timeout:
+      minutes: 10
+    definitions:
+    - repository:
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: {{ plan }}
+          description: "v4l2 test plan"
+          os:
+          - debian
+          scope:
+          - functional
+        run:
+          steps:
+          - /usr/bin/v4l2-parser.sh {{ v4l2_driver }}
+      from: inline
+      name: {{ plan }}
+      path: inline/{{ plan }}.yaml

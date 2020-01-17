@@ -1,0 +1,7 @@
+{% extends 'boot/generic-ipxe-tftp-ramdisk-boot-template.jinja2' %}
+{% block actions %}
+{{ super () }}
+
+{% include 'simple/simple.jinja2' %}
+
+{% endblock %}
