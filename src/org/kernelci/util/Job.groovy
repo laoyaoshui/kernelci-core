@@ -35,6 +35,7 @@ def addBoolParams(params, bool_params) {
 }
 
 def cloneKciCore(path, url, branch) {
+    echo "===== yypp job 30000 "
     sh(script: "rm -rf ${path}")
     dir("${path}") {
         git(url: url,
@@ -46,6 +47,7 @@ def cloneKciCore(path, url, branch) {
 def dockerImageName(kci_core, build_env, kernel_arch) {
     def image_name = build_env
     def cc = null
+    echo "===== yypp job 20000 "
 
     dir(kci_core) {
         def build_env_raw = sh(
@@ -71,11 +73,13 @@ def dockerImageName(kci_core, build_env, kernel_arch) {
 }
 
 def dockerPullWithRetry(image_name, retries=10, sleep_time=1) {
+    echo "===== yypp job 10000 "+image_name
     def image = docker.image(image_name)
     def pulled = false
 
     while (!pulled) {
         try {
+    echo "===== yypp job 10001 "
             image.pull()
             pulled = true
         }
