@@ -78,7 +78,7 @@ node() {
     def kci_core = env.WORKSPACE + '/kernelci-core'
     def trees_dir = "${env.WORKSPACE}/trees"
     def docker_image = "${params.DOCKER_BASE}base"
-    echo "=======yypp 10000 "+kci_core+" "+trees_dir+" "+docker_image
+    echo "=======yypp 10000 "+kci_core+" "+trees_dir+" "+docker_image+" "+env.WORKSPACE+" "+params.DOCKER_BASE
     print("""\
     Storage:   ${params.KCI_STORAGE_URL}
     Container: ${docker_image}""")
