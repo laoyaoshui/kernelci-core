@@ -74,12 +74,11 @@ check_new_commit \
 }
 
 node() {
-    echo "=======yypp 10000 "
     def j = new Job()
     def kci_core = env.WORKSPACE + '/kernelci-core'
     def trees_dir = "${env.WORKSPACE}/trees"
     def docker_image = "${params.DOCKER_BASE}base"
-    echo "=======yypp 10000 "
+    echo "=======yypp 10000 "+kci_core+" "+trees_dir+" "+docker_image
     print("""\
     Storage:   ${params.KCI_STORAGE_URL}
     Container: ${docker_image}""")
