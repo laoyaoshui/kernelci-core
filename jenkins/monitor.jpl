@@ -75,12 +75,12 @@ check_new_commit \
 
 node() {
     parameters {
-        string(name: 'CONFIG_LIST', defaultValue: 'build-configs.yaml', description: 'How should I greet the world?'),
-        string(name: 'KCI_API_URL', defaultValue: 'https://api.kernelci.org', description: 'How should I greet the world?'),
-        string(name: 'KCI_TOKEN_ID', defaultValue: '5fb1add2-ded7-493e-ad7e-324fb7b2f585', description: 'How should I greet the world?'),
-        string(name: 'KCI_STORAGE_URL', defaultValue: 'http://kernelci-storage', description: 'How should I greet the world?'),
-        string(name: 'KCI_CORE_URL', defaultValue: 'https://github.com/laoyaoshui/kernelci-core', description: 'How should I greet the world?'),
-        string(name: 'KCI_CORE_BRANCH', defaultValue: 'master', description: 'How should I greet the world?'),
+        string(name: 'CONFIG_LIST', defaultValue: 'build-configs.yaml', description: 'How should I greet the world?')
+        string(name: 'KCI_API_URL', defaultValue: 'https://api.kernelci.org', description: 'How should I greet the world?')
+        string(name: 'KCI_TOKEN_ID', defaultValue: '5fb1add2-ded7-493e-ad7e-324fb7b2f585', description: 'How should I greet the world?')
+        string(name: 'KCI_STORAGE_URL', defaultValue: 'http://kernelci-storage', description: 'How should I greet the world?')
+        string(name: 'KCI_CORE_URL', defaultValue: 'https://github.com/laoyaoshui/kernelci-core', description: 'How should I greet the world?')
+        string(name: 'KCI_CORE_BRANCH', defaultValue: 'master', description: 'How should I greet the world?')
         string(name: 'DOCKER_BASE', defaultValue: 'kernelci/build-', description: 'How should I greet the world?')
     }  
     def j = new Job()
