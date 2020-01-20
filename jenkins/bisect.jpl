@@ -221,20 +221,20 @@ done
 """)
 
         sh(script:"""\
-./kci_build \
+/root/kernelci-core/kci_build \
 generate_defconfig_fragments \
 --defconfig=${params.DEFCONFIG} \
 --kdir=${kdir} \
 """)
 
         def expanded_defconfig = sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 expand_fragments \
 --defconfig=${params.DEFCONFIG} \
 """, returnStdout: true).trim()
 
         sh(script:"""\
-./kci_build \
+/root/kernelci-core/kci_build \
 build_kernel \
 --kdir=${kdir} \
 --defconfig=${expanded_defconfig} \
@@ -244,7 +244,7 @@ build_kernel \
 """)
 
         sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 install_kernel \
 --kdir=${kdir} \
 --tree-name=${params.KERNEL_TREE} \
@@ -256,7 +256,7 @@ install_kernel \
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
             sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 push_kernel \
 --kdir=${kdir} \
 --token=${SECRET} \
@@ -288,7 +288,7 @@ def fetchLabInfo(kci_core) {
 
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
-./kci_test \
+/root/kernelci-core/kci_test \
 get_lab_info \
 --lab=${params.LAB} \
 --lab-json=${env._LAB_JSON} \
@@ -319,7 +319,7 @@ rm -rf data; mkdir data \
 
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """ \
-./kci_test \
+/root/kernelci-core/kci_test \
 generate \
 --bmeta-json=${env._BMETA_JSON} \
 --dtbs-json=${env._DTBS_JSON} \
@@ -338,7 +338,7 @@ generate \
 """)
 
             sh(script: """ \
-./kci_test \
+/root/kernelci-core/kci_test \
 submit \
 --lab=${params.LAB} \
 --user=kernel-ci \
@@ -422,7 +422,7 @@ def findMergeBase(kdir, kci_core, good, bad) {
             if (!(ref_url && ref_tree && ref_branch)) {
                 dir(kci_core) {
                     ref_config = sh(script: """\
-                                    ./kci_build get_reference --tree-name ${params.KERNEL_TREE} \
+                                    /root/kernelci-core/kci_build get_reference --tree-name ${params.KERNEL_TREE} \
                                     --branch ${params.KERNEL_BRANCH}""", returnStdout: true).trim().tokenize("\n")
                     if (ref_config.size() > 0) {
                         ref_url = ref_config[0]

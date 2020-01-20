@@ -71,7 +71,7 @@ def buildConfig(kdir, kci_core) {
 
     dir(kci_core) {
         sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 build_kernel \
 --kdir=${kdir} \
 --defconfig=${params.DEFCONFIG} \
@@ -83,7 +83,7 @@ ${jopt} \
 """)
 
         sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 install_kernel \
 --kdir=${kdir} \
 --config=${params.BUILD_CONFIG} \
@@ -95,7 +95,7 @@ install_kernel \
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
             sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 push_kernel \
 --kdir=${kdir} \
 --token=${SECRET} \
@@ -103,7 +103,7 @@ push_kernel \
 """)
 
             sh(script: """\
-./kci_build \
+/root/kernelci-core/kci_build \
 publish_kernel \
 --kdir=${kdir} \
 --token=${SECRET} \
@@ -142,7 +142,7 @@ node("docker" && params.NODE_LABEL) {
         stage("Init") {
             timeout(time: 30, unit: 'MINUTES') {
                 dir(kci_core) {
-                  sh(script: """./kci_build pull_tarball \
+                  sh(script: """/root/kernelci-core/ pull_tarball \
                                 --kdir ${kdir} \
                                 --url ${params.SRC_TARBALL} \
                                 --retries=12 \
