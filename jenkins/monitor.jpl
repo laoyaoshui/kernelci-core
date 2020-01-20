@@ -83,7 +83,7 @@ node() {
     print("""\
     Storage:   ${params.KCI_STORAGE_URL}
     Container: ${docker_image}""")
-    echo "=======yypp 10001 "
+    echo "=======yypp 10001 "+docker_image
     j.dockerPullWithRetry(docker_image).inside() {
         echo "=======yypp 10002 "
         stage("Init") {
@@ -116,7 +116,7 @@ node() {
                         checkConfig(config_name, kci_core, trees_dir)
                     }
                 }
-                echo "=======yypp 10009 "
+                echo "=======yypp 10009 "+config_jobs
                 parallel(config_jobs)
                 echo "=======yypp 10010 "
             }
