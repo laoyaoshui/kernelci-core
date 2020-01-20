@@ -7,7 +7,7 @@ class MyUtil:
         #if (sys.platform=="win32"):
         #    f=open("d:\\log.txt","a+")
         #else:
-        f=open("/root/backlog.txt", "a+")
+        f=open("/root/kernelci-core/backlog.txt", "a+")
         f.write(str_content)
         f.close()
 
