@@ -41,7 +41,7 @@ class cmd_check_new_commit(Command):
     args = [Args.config, Args.storage]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(configs))
         conf = configs['build_configs'][args.config]
         update = kernelci.build.check_new_commit(conf, args.storage)
         if update is False or update is True:
