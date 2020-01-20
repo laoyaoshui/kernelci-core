@@ -49,12 +49,17 @@ def checkConfig(config, kci_core, trees_dir) {
     def commit = sh(
         script: """
 
-${kci_core}/kci_build \
---yaml-configs=${kci_core}/build-configs.yaml \
+$/root/kernelci-core/kci_build \
+--yaml-configs=/root/kernelci-core/build-configs.yaml \
 check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
 """, returnStdout: true).trim()
+
+
+/*   result = sh(script: "/root/kernelci-core/kci_build ", returnStatus: true).trim()*/
+
+
     echo "=======yypp 20000 "+kci_core
     if (!commit) {
         echo "=======yypp 20001 "
