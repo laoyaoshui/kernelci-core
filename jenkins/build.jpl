@@ -69,7 +69,7 @@ def buildConfig(kdir, kci_core) {
     if (params.PARALLEL_BUILDS)
         jopt = "-j${params.PARALLEL_BUILDS}"
 
-    dir('/root/kernelci-core') {
+    dir(kci_core) {
         sh(script: """\
 ./kci_build \
 build_kernel \
@@ -117,10 +117,10 @@ publish_kernel \
     }
 }
 
-node("docker" && params.NODE_LABEL) {
+node(") {
     def j = new Job()
-    def kci_core = "${env.WORKSPACE}/kernelci-core"
-    def kdir = "${env.WORKSPACE}/linux"
+    def kci_core = "/root/kernelci-core"
+    def kdir = "/root/linux"
     def docker_image = null
 
     print("""\
@@ -141,7 +141,7 @@ node("docker" && params.NODE_LABEL) {
     j.dockerPullWithRetry(docker_image).inside() {
         stage("Init") {
             timeout(time: 30, unit: 'MINUTES') {
-                dir('/root/kernelci-core') {
+                dir(kci_core) {
                   sh(script: """./kci_build pull_tarball \
                                 --kdir ${kdir} \
                                 --url ${params.SRC_TARBALL} \

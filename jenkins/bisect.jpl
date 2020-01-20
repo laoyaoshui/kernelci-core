@@ -219,8 +219,7 @@ for d in \$(find ${kdir} -name "build-*" -type d); do
   [ "\$d" = "${output}" ] || rm -rf "\$d"
 done
 """)
-   dir('/root/kernelci-core')
-   {
+
         sh(script:"""\
 ./kci_build \
 generate_defconfig_fragments \
@@ -284,7 +283,7 @@ def buildRevision(kdir, kci_core, git_rev, name) {
  */
 
 def fetchLabInfo(kci_core) {
-    dir('/root/kernelci-core') {
+    dir(kci_core) {
         def token = "${params.LAB}-lava-api"
 
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
@@ -302,7 +301,7 @@ get_lab_info \
 }
 
 def submitJob(kci_core, describe, hook) {
-    dir('/root/kernelci-core')) {
+    dir(kci_core) {
         sh(script: """\
 rm -f ${env._BMETA_JSON} \
 rm -f ${env._DTBS_JSON} \
@@ -353,7 +352,7 @@ submit \
 def getResult(kci_core, hook) {
     def status = null
 
-    dir('/root/kernelci-core') {
+    dir(kci_core) {
         echo "Waiting for job results..."
         def data = waitForWebhook(hook)
         def json_file = 'callback.json'
@@ -410,7 +409,7 @@ def runTest(kci_core, describe, expected=0, runs=0) {
 def findMergeBase(kdir, kci_core, good, bad) {
     def base = good
 
-    dir('/root/kernelci-core') {
+    dir(kdir) {
         def good_base = sh(
             returnStatus: true,
             script: "git merge-base --is-ancestor ${base} HEAD")
@@ -421,8 +420,7 @@ def findMergeBase(kdir, kci_core, good, bad) {
             def ref_branch = params.REF_KERNEL_BRANCH
 
             if (!(ref_url && ref_tree && ref_branch)) {
-                dir('/root/kernelci-core'){
-			
+                dir(kci_core) {
                     ref_config = sh(script: """\
                                     ./kci_build get_reference --tree-name ${params.KERNEL_TREE} \
                                     --branch ${params.KERNEL_BRANCH}""", returnStdout: true).trim().tokenize("\n")
@@ -467,7 +465,7 @@ git bisect bad ${bad}
 }
 
 def bisectNext(kdir, status) {
-    dir('/root/kernelci-core') {
+    dir(kdir) {
         sh(script: "git clean -fd")
 
         switch (status) {
@@ -498,7 +496,7 @@ def pushResults(kci_core, kdir, checks, params_summary) {
 ${params.KERNEL_TREE}/${params.KERNEL_BRANCH} bisection: \
 ${params.TEST_PLAN} on ${params.TARGET}"
 
-    dir('/root/kernelci-core')) {
+    dir(kci_core) {
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
             def egg_cache = eggCache()
@@ -675,15 +673,15 @@ def bisection(kci_core, kdir, checks) {
     return true
 }
 
-node("docker && bisection") {
+node("") {
     /* Global pipeline constants */
     env._BMETA_JSON = "bmeta.json"
     env._DTBS_JSON = "dtbs.json"
     env._LAB_JSON = "lab-info.json"
 
     def j = new Job()
-    def kci_core = "${env.WORKSPACE}/kernelci-core"
-    def kdir = "${env.WORKSPACE}/linux"
+    def kci_core = "/root/kernelci-core"
+    def kdir = "/root/linux"
     def checks = [:]
     def docker_image = null
 

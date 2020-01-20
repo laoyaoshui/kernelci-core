@@ -46,31 +46,22 @@ DOCKER_BASE (kernelci/build-)
 import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {
-    echo "=======yypp 200000 " +config+" "
-    echo "=======yypp 200001 " +kci_core+" "
-    echo "=======yypp 200002 " +trees_dir+" "
-
     def commit = sh(
         script: """
-/root/kernelci-core/kci_build \
---yaml-configs=/root/kernelci-core/build-configs.yaml \
+${kci_core}/kci_build \
+--yaml-configs=${kci_core}/build-configs.yaml \
 check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
 """, returnStdout: true).trim()
 
-
-/*   result = sh(script: "/root/kernelci-core/kci_build ", returnStatus: true).trim()*/
-
-
     if (!commit) {
-        echo "=======yypp 20001 "
         print("${config}: no new commit")
         return
     }
 
     print("${config}: triggering build")
-    echo "=======yypp 20002 " 
+
     def job = "kernel-build-trigger"
     def str_params = [
         'BUILD_CONFIG': config,
@@ -78,19 +69,17 @@ check_new_commit \
     def job_params = []
     def j = new Job()
     j.addStrParams(job_params, str_params)
-    echo "=======yypp 20003 " 
 
     build(job: job, parameters: job_params, propagate: false, wait: false)
-    echo "=======yypp 20004 " 
 }
 
 node() {
-
+    echo "=======yypp 10000 "
     def j = new Job()
-    def kci_core = env.WORKSPACE + '/kernelci-core'
-    def trees_dir = "${env.WORKSPACE}/trees"
+    def kci_core = "/root/kernelci-core"
+    def trees_dir = "/root/trees"
     def docker_image = "${params.DOCKER_BASE}base"
-    echo "=======yypp 10000 "+kci_core+" "+trees_dir+" "+docker_image+" "+env.WORKSPACE+" "+params.DOCKER_BASE
+    echo "=======yypp 10000 "
     print("""\
     Storage:   ${params.KCI_STORAGE_URL}
     Container: ${docker_image}""")
@@ -107,25 +96,21 @@ node() {
         echo "=======yypp 10004 "
         stage("Monitor") {
             echo "=======yypp 10005 "
-            dir('/root/kernelci-core') {
+            dir(kci_core) {
                 echo "=======yypp 10006 "
                 def config_list = null
                 def config_jobs = [:]
 
                 if (params.CONFIG_LIST != "") {
                     config_list = params.CONFIG_LIST.tokenize(' ')
-                  echo "=======yypp 100061 "+config_list
                 } else {
                     def raw_configs = sh(script: "./kci_build list_configs",
                                          returnStdout: true).trim()
                     config_list = raw_configs.tokenize('\n')
-                  echo "=======yypp 100062 "+config_list
                 }
-                echo "=======yypp 10007 " +config_list
+                echo "=======yypp 10007 " 
                 for (String config: config_list) {
-                    echo "=======yypp 100081 "+config
-                    echo "=======yypp 100082 "+kci_core
-                    echo "=======yypp 100083 "+trees_dir
+                    echo "=======yypp 10008 "
                     def config_name = config
                     config_jobs[config_name] = {
                         checkConfig(config_name, kci_core, trees_dir)

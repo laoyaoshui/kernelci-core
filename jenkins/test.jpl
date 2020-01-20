@@ -46,24 +46,12 @@ DOCKER_BASE (kernelci/build-)
 import org.kernelci.util.Job
 
 def dotest() {
-   /*result = sh(script: "cd /root/kernelci-core", returnStatus: true)*/
-
-   dir('/root/kernelci-core')
-   {
     echo "=======yypp 20000 "
-   result = sh(script: "./kci_build list_configs", returnStatus: true)
-    echo "=======yypp 20001 "+result   
-   }
 
-   /*sh 'echo hello'*/
-   /*
-   def exitValue = sh(script: "echo hello ", returnStatus: true)
-    echo "return exitValue :${exitValue}"
-    if(exitValue != 0){
-        echo "=======yypp 20001 "    
-    }
-    echo "=======yypp 20002 "
-    */
+   /*result = sh(script: "/root/hello.sh", returnStatus: true).trim()*/
+
+    sh 'echo hello'
+    echo "=======yypp 20001 "
 }
 
 node() {

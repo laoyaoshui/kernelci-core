@@ -70,7 +70,7 @@ def generateJobs(kci_core, lab, artifacts, jobs_dir)
 {
     def token = "${lab}-lava-api"
 
-    dir('/root/kernelci-core') {
+    dir(kci_core) {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
 ./kci_test \
@@ -94,7 +94,7 @@ def submitJobs(kci_core, lab, jobs_dir)
 {
     def token = "${lab}-lava-api"
 
-    dir('/root/kernelci-core') {
+    dir(kci_core) {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
 ./kci_test \
@@ -108,11 +108,11 @@ submit \
     }
 }
 
-node("docker && test-runner") {
+node("") {
     def j = new Job()
-    def kci_core = "${env.WORKSPACE}/kernelci-core"
-    def jobs_dir = "${env.WORKSPACE}/jobs"
-    def artifacts = "${env.WORKSPACE}/artifacts"
+    def kci_core = "$/root/kernelci-core"
+    def jobs_dir = "/root/jobs"
+    def artifacts = "/root/artifacts"
     def docker_image = "${params.DOCKER_BASE}base"
     def labs = params.LABS.tokenize(' ')
     def labs_submit = []
