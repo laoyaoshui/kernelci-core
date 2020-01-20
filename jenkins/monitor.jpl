@@ -47,6 +47,8 @@ import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {
     echo "=======yypp 20000 " +config+" "
+    echo "=======yypp 20000 " +kci_core+" "
+    echo "=======yypp 20000 " +trees_dir+" "
 
     def commit = sh(
         script: """
