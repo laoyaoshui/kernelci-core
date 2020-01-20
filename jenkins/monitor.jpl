@@ -114,10 +114,12 @@ node() {
 
                 if (params.CONFIG_LIST != "") {
                     config_list = params.CONFIG_LIST.tokenize(' ')
+                  echo "=======yypp 100061 "+config_list
                 } else {
-                    def raw_configs = sh(script: "/root/kernelci-core/kci_build list_configs",
+                    def raw_configs = sh(script: "./kci_build list_configs",
                                          returnStdout: true).trim()
                     config_list = raw_configs.tokenize('\n')
+                  echo "=======yypp 100062 "+config_list
                 }
                 echo "=======yypp 10007 " +config_list
                 for (String config: config_list) {

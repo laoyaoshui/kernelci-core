@@ -39,7 +39,6 @@ def get_device_type_by_name(name, device_types, aliases=[]):
             {'busy': 1, 'idle': 0, 'name': 'x15', 'offline': 0}
 
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     for device_type in device_types:
         if device_type["name"] == name:
             return device_type

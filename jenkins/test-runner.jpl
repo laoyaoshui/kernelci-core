@@ -73,7 +73,7 @@ def generateJobs(kci_core, lab, artifacts, jobs_dir)
     dir('/root/kernelci-core') {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
-/root/kernelci-core/kci_test \
+./kci_test \
 generate \
 --bmeta-json=${artifacts}/bmeta.json \
 --dtbs-json=${artifacts}/dtbs.json \
@@ -97,7 +97,7 @@ def submitJobs(kci_core, lab, jobs_dir)
     dir('/root/kernelci-core') {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
-/root/kernelci-core/kci_test \
+./kci_test \
 submit \
 --lab=${lab} \
 --user=kernel-ci \

@@ -21,7 +21,6 @@ from MyUtil import MyUtil
 
 
 def shell_cmd(cmd, ret_code=False):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(cmd))
     if ret_code:
         return False if subprocess.call(cmd, shell=True) else True
     else:

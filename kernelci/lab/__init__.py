@@ -31,7 +31,6 @@ class LabAPI(object):
 
         *config* is a kernelci.config.lab.Lab object
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._config = config
         self._server = None
         self._devices = None
@@ -42,13 +41,11 @@ class LabAPI(object):
 
     @property
     def devices(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         if self._devices is None:
             self._devices = self._get_devices()
         return self._devices
 
     def _get_devices(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list()
 
     def connect(self, user=None, token=None):
@@ -57,7 +54,6 @@ class LabAPI(object):
         *user* is the name of the user to connect to the lab
         *token* is the token associated with the user to connect to the lab
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         if user and token:
             url = urllib.parse.urlparse(self.config.url)
             api_url = "{scheme}://{user}:{token}@{loc}{path}".format(
@@ -68,27 +64,21 @@ class LabAPI(object):
         self._server = xmlrpc.client.ServerProxy(api_url)
 
     def import_devices(self, data):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._devices = data
 
     def device_type_online(self, device_type_name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return True
 
     def job_file_name(self, params):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return params['name']
 
     def match(self, filter_data):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self.config.match(filter_data)
 
     def generate(self, params, target, plan, callback_opts):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         raise NotImplementedError("Lab.generate() is required")
 
     def submit(self, job):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         raise NotImplementedError("Lab.submit() is required")
 
 
@@ -100,7 +90,6 @@ def get_api(lab, user=None, token=None, lab_json=None):
     *token* is the associated token to connect to the remote lab
     *lab_json* is the path to a JSON file with cached lab information
     """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     m = importlib.import_module('.'.join(['kernelci', 'lab', lab.lab_type]))
     api = m.get_api(lab)
     if lab_json:

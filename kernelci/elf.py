@@ -50,7 +50,6 @@ def calculate_data_size(elf_file):
     :return The .data size or 0.
     """
     data_size = 0
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     for section in elf_file.iter_sections():
         elf_flags = section["sh_flags"]
@@ -76,7 +75,6 @@ def read(path):
     :return A dictionary with the extracted values.
     """
     extracted = {}
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     if os.path.isfile(path):
         with io.open(path, mode="rb") as vmlinux_strm:

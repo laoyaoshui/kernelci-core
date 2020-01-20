@@ -55,7 +55,7 @@ def configAlreadyBuilt(config, kci_core) {
     dir('/root/kernelci-core') {
         new_commit = sh(
         script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
@@ -68,7 +68,7 @@ check_new_commit \
 def pushTarball(config, kci_core, mirror, kdir, opts) {
     dir('/root/kernelci-core') {
         sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 update_mirror \
 --config=${config} \
 --mirror=${mirror} \
@@ -77,7 +77,7 @@ update_mirror \
         while (true) {
             try {
                 sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 update_repo \
 --config=${config} \
 --kdir=${kdir} \
@@ -93,7 +93,7 @@ update_repo \
         }
 
         def describe_raw = sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 describe \
 --config=${config} \
 --kdir=${kdir} \
@@ -106,7 +106,7 @@ describe \
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
             sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 update_last_commit \
 --config=${config} \
 --commit=${opts['commit']} \
@@ -115,14 +115,14 @@ update_last_commit \
 """)
 
             sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 generate_fragments \
 --config=${config} \
 --kdir=${kdir} \
 """)
 
             opts['tarball_url'] = sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 push_tarball \
 --config=${config} \
 --kdir=${kdir} \
@@ -137,7 +137,7 @@ push_tarball \
 def listConfigs(config, kci_core, kdir, config_list) {
     dir('/root/kernelci-core') {
         def kernel_config_list_raw = sh(script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 list_kernel_configs \
 --config=${config} \
 --kdir=${kdir} \
@@ -160,7 +160,7 @@ def listArchitectures(kci_core, config) {
     dir('/root/kernelci-core')) {
         def raw_variants = sh(
             script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 list_variants \
 --config=${config} \
 """, returnStdout: true).trim()
@@ -169,7 +169,7 @@ list_variants \
         for (String variant: variants) {
             def raw_variant_arch_list = sh(
                 script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 arch_list \
 --config=${config} \
 --variant=${variant} \
@@ -191,7 +191,7 @@ def addBuildOpts(config, kci_core, opts) {
 
         def opts_raw = sh(
             script: """\
-/root/kernelci-core/kci_build \
+./kci_build \
 tree_branch \
 --config=${config} \
 """, returnStdout: true).trim()
@@ -306,7 +306,7 @@ node("docker && build-trigger") {
 
             dir('/root/kernelci-core') {
                 def raw_lab_names = sh(
-                    script: "/root/kernelci-core/kci_test list_labs", returnStdout: true).trim()
+                    script: "./kci_test list_labs", returnStdout: true).trim()
                 def all_lab_names = raw_lab_names.tokenize('\n')
                 def labs_list = []
 
@@ -327,7 +327,7 @@ node("docker && build-trigger") {
                         withCredentials([string(credentialsId: token,
                                                 variable: 'SECRET')]) {
                             sh(script: """\
-/root/kernelci-core/kci_test \
+./kci_test \
 get_lab_info \
 --lab=${lab} \
 --lab-json=${lab_json} \

@@ -32,7 +32,6 @@ def match_configs(configs, bmeta, dtbs, lab):
     The returned value is a list with a subset of the configs that match the
     provided kernel build meta-data and lab filters.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     defconfig = bmeta['defconfig_full']
     arch = bmeta['arch']
 
@@ -75,7 +74,6 @@ def get_params(bmeta, target, plan_config, storage):
     *plan_config* is a TestPlan object for the test plan to run
     *storage* is the URL of the storage server
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     arch = target.arch
     dtb = dtb_full = target.dtb
     if dtb:
