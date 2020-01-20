@@ -47,7 +47,9 @@ import org.kernelci.util.Job
 
 def dotest() {
     echo "=======yypp 20000 "
-   result = sh(script: "/root/hello.sh", returnStatus: true).trim()
+   /*result = sh(script: "/root/hello.sh", returnStatus: true).trim()*/
+   result = sh(script: "/root/kernelci-core/kci_build list_configs", returnStatus: true).trim()
+    echo "=======yypp 20001 "+result   
    /*sh 'echo hello'*/
    /*
    def exitValue = sh(script: "echo hello ", returnStatus: true)
