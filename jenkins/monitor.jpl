@@ -46,9 +46,9 @@ DOCKER_BASE (kernelci/build-)
 import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {
-    echo "=======yypp 20000 " +config+" "
-    echo "=======yypp 20000 " +kci_core+" "
-    echo "=======yypp 20000 " +trees_dir+" "
+    echo "=======yypp 200000 " +config+" "
+    echo "=======yypp 200001 " +kci_core+" "
+    echo "=======yypp 200002 " +trees_dir+" "
 
     def commit = sh(
         script: """
@@ -121,7 +121,9 @@ node() {
                 }
                 echo "=======yypp 10007 " 
                 for (String config: config_list) {
-                    echo "=======yypp 10008 "+config
+                    echo "=======yypp 100081 "+config
+                    echo "=======yypp 100082 "+kci_core
+                    echo "=======yypp 100083 "+trees_dir
                     def config_name = config
                     config_jobs[config_name] = {
                         checkConfig(config_name, kci_core, trees_dir)
