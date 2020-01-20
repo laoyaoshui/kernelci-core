@@ -121,7 +121,7 @@ node() {
                 }
                 echo "=======yypp 10007 " 
                 for (String config: config_list) {
-                    echo "=======yypp 10008 "
+                    echo "=======yypp 10008 "+config
                     def config_name = config
                     config_jobs[config_name] = {
                         checkConfig(config_name, kci_core, trees_dir)
