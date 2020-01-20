@@ -76,8 +76,8 @@ check_new_commit \
 node() {
     echo "=======yypp 10000 "
     def j = new Job()
-    def kci_core = "/root/kernelci-core"
-    def trees_dir = "/root/trees"
+    def kci_core = "/var/kernelci-core"
+    def trees_dir = "/var/trees"
     def docker_image = "${params.DOCKER_BASE}base"
     echo "=======yypp 10000 "
     print("""\

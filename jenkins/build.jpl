@@ -119,8 +119,8 @@ publish_kernel \
 
 node(") {
     def j = new Job()
-    def kci_core = "/root/kernelci-core"
-    def kdir = "/root/linux"
+    def kci_core = "/var/kernelci-core"
+    def kdir = "/var/linux"
     def docker_image = null
 
     print("""\
