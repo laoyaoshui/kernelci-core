@@ -31,7 +31,6 @@ class Tree(YAMLObject):
         *name* is the name of the tree, such as "mainline" or "next".
         *url* is the git remote URL for the tree.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._url = url
 
@@ -40,18 +39,15 @@ class Tree(YAMLObject):
         kw = {
             'name': name,
         }
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.update(cls._kw_from_yaml(config, ['url', 'name']))
         return cls(**kw)
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def url(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._url
 
 
@@ -64,25 +60,21 @@ class Reference(YAMLObject):
         *tree* is a Tree object
         *branch* is the branch name to be used from the tree
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._tree = tree
         self._branch = branch
 
     @classmethod
     def from_yaml(cls, reference, trees):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = cls._kw_from_yaml(reference, ['tree', 'branch'])
         kw['tree'] = trees[kw['tree']]
         return cls(**kw)
 
     @property
     def tree(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._tree
 
     @property
     def branch(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._branch
 
 
@@ -106,7 +98,6 @@ class Fragment(YAMLObject):
                     special cases such as the tiny.config fragment which needs
                     to be built with the tinyconfig make target.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._path = path
         self._configs = configs or list()
@@ -114,7 +105,6 @@ class Fragment(YAMLObject):
 
     @classmethod
     def from_yaml(cls, config, name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
         }
@@ -125,22 +115,18 @@ class Fragment(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def path(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._path
 
     @property
     def configs(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._configs)
 
     @property
     def defconfig(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._defconfig
 
 
@@ -166,7 +152,6 @@ class Architecture(YAMLObject):
         *filters* is a list of filters to limit the number of builds, typically
                   using a list of defconfigs to blacklist or whitelist.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._base_defconfig = base_defconfig
         self._extra_configs = extra_configs or []
@@ -175,7 +160,6 @@ class Architecture(YAMLObject):
 
     @classmethod
     def from_yaml(cls, data, name, fragments):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
         }
@@ -189,26 +173,21 @@ class Architecture(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def base_defconfig(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._base_defconfig
 
     @property
     def extra_configs(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._extra_configs)
 
     @property
     def fragments(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._fragments)
 
     def match(self, params):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return all(f.match(**params) for f in self._filters)
 
 
@@ -246,7 +225,6 @@ class BuildEnvironment(YAMLObject):
 
     @classmethod
     def from_yaml(cls, config, name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
         }
@@ -256,25 +234,20 @@ class BuildEnvironment(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def cc(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._cc
 
     @property
     def cc_version(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._cc_version
 
     def get_arch_name(self, kernel_arch):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._arch_map.get(kernel_arch, kernel_arch)
 
     def get_cross_compile(self, kernel_arch):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._cross_compile.get(kernel_arch, '')
 
 
@@ -299,7 +272,6 @@ class BuildVariant(YAMLObject):
         *fragments* is an optional list of Fragment objects to define fragments
                     to build with this build variant.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._architectures = {arch.name: arch for arch in architectures}
         self._build_environment = build_environment
@@ -307,7 +279,6 @@ class BuildVariant(YAMLObject):
 
     @classmethod
     def from_yaml(cls, config, name, fragments, build_environments):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
         }
@@ -324,31 +295,25 @@ class BuildVariant(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def arch_list(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._architectures.keys())
 
     @property
     def architectures(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._architectures.values())
 
     def get_arch(self, arch_name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._architectures.get(arch_name)
 
     @property
     def build_environment(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._build_environment
 
     @property
     def fragments(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._fragments)
 
 
@@ -375,7 +340,6 @@ class BuildConfig(YAMLObject):
                     bad revisions.  It can also be None if no reference branch
                     can be used with this build configuration.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._tree = tree
         self._branch = branch
@@ -384,7 +348,6 @@ class BuildConfig(YAMLObject):
 
     @classmethod
     def from_yaml(cls, config, name, trees, fragments, build_envs, defaults):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
         }
@@ -405,36 +368,29 @@ class BuildConfig(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def tree(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._tree
 
     @property
     def branch(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._branch
 
     @property
     def variants(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._variants.values())
 
     def get_variant(self, name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._variants[name]
 
     @property
     def reference(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._reference
 
 
 def from_yaml(yaml_path):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     with open(yaml_path) as f:
         data = yaml.safe_load(f)
 

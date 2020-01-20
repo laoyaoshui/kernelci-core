@@ -50,12 +50,10 @@ class Filter(object):
 
     def __init__(self, items):
         """The *items* can be any data used to filter configurations."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._items = items
 
     def match(self, **kw):
         """Return True if the given *kw* keywords match the filter."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         raise NotImplementedError("Filter.match() is not implemented")
 
 

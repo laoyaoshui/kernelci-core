@@ -41,7 +41,6 @@ class DeviceType(YAMLObject):
         *params* is a dictionary with parameters to pass to the test job
                  generator.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._mach = mach
         self._arch = arch
@@ -54,56 +53,45 @@ class DeviceType(YAMLObject):
         self._context = context or dict()
 
     def __repr__(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self.name
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def base_name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._base_name
 
     @property
     def mach(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._mach
 
     @property
     def arch(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._arch
 
     @property
     def boot_method(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._boot_method
 
     @property
     def dtb(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._dtb
 
     @property
     def params(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return dict(self._params)
 
     @property
     def context(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._context
 
     def get_flag(self, name):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return name in self._flags
 
     def match(self, flags, config):
         """Checks if the given *flags* and *config* match this device type."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return (
             all(not v or self.get_flag(k) for k, v in flags.items()) and
             all(f.match(**config) for f in self._filters)
@@ -114,7 +102,6 @@ class DeviceType_arc(DeviceType):
 
     def __init__(self, name, mach, arch='arc', *args, **kw):
         """arc device type with a device tree."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.setdefault('dtb', '{}.dtb'.format(name))
         super(DeviceType_arc, self).__init__(name, mach, arch, *args, **kw)
 
@@ -123,7 +110,6 @@ class DeviceType_arm(DeviceType):
 
     def __init__(self, name, mach, arch='arm', *args, **kw):
         """arm device type with a device tree."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.setdefault('dtb', '{}.dtb'.format(name))
         super(DeviceType_arm, self).__init__(name, mach, arch, *args, **kw)
 
@@ -132,7 +118,6 @@ class DeviceType_mips(DeviceType):
 
     def __init__(self, name, mach, arch='mips', *args, **kw):
         """mips device type with a device tree."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.setdefault('dtb', '{}.dtb'.format(name))
         super(DeviceType_mips, self).__init__(name, mach, arch, *args, **kw)
 
@@ -141,7 +126,6 @@ class DeviceType_arm64(DeviceType):
 
     def __init__(self, name, mach, arch='arm64', *args, **kw):
         """arm64 device type with a device tree."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.setdefault('dtb', '{}/{}.dtb'.format(mach, name))
         super(DeviceType_arm64, self).__init__(name, mach, arch, *args, **kw)
 
@@ -150,7 +134,6 @@ class DeviceType_riscv(DeviceType):
 
     def __init__(self, name, mach, arch='riscv', *args, **kw):
         """RISCV device type with a device tree."""
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw.setdefault('dtb', '{}/{}.dtb'.format(mach, name))
         super(DeviceType_riscv, self).__init__(name, mach, arch, *args, **kw)
 
@@ -168,7 +151,6 @@ class DeviceTypeFactory(YAMLObject):
 
     @classmethod
     def from_yaml(cls, name, device_type, default_filters=None):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = cls._kw_from_yaml(device_type, [
             'mach', 'arch', 'boot_method',
             'dtb', 'flags', 'context', 'params',
@@ -200,13 +182,11 @@ class RootFSType(YAMLObject):
                     dictionaries with kernel architecture names and other
                     properties such as the endinanness.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._url = url
         self._arch_dict = arch_dict or dict()
 
     @classmethod
     def from_yaml(cls, fs_type):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = cls._kw_from_yaml(fs_type, ['url'])
         arch_map = fs_type.get('arch_map')
         if arch_map:
@@ -220,11 +200,9 @@ class RootFSType(YAMLObject):
 
     @property
     def url(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._url
 
     def get_arch_name(self, arch, endian):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         arch_key = ('arch', arch)
         endian_key = ('endian', endian)
         arch_name = (self._arch_dict.get((arch_key, endian_key)) or
@@ -256,7 +234,6 @@ class RootFS(YAMLObject):
         *prompt* is a string used in the job definition to tell when the
                  user-space is available to run some commands.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._url_format = url_formats
         self._fs_type = fs_type
         self._root_type = root_type or list(url_formats.keys())[0]
@@ -266,7 +243,6 @@ class RootFS(YAMLObject):
 
     @classmethod
     def from_yaml(cls, file_system_types, rootfs):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = cls._kw_from_yaml(rootfs, [
             'boot_protocol', 'root_type', 'prompt'])
         fs_type = file_system_types[rootfs['type']]
@@ -281,17 +257,14 @@ class RootFS(YAMLObject):
 
     @property
     def prompt(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._prompt
 
     @property
     def boot_protocol(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._boot_protocol
 
     @property
     def root_type(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._root_type
 
     def get_url(self, fs_type, arch, endian):
@@ -300,7 +273,6 @@ class RootFS(YAMLObject):
         The *fs_type* should match one of the URL patterns known to this root
         file system.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         fmt = self._url_format.get(fs_type)
         if not fmt:
             return None
@@ -339,7 +311,6 @@ class TestPlan(YAMLObject):
                   regular template file naming scheme.
 
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._rootfs = rootfs
         self._base_name = base_name or name
@@ -351,7 +322,6 @@ class TestPlan(YAMLObject):
 
     @classmethod
     def from_yaml(cls, name, test_plan, file_systems, default_filters=None):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = {
             'name': name,
             'rootfs': file_systems[test_plan['rootfs']],
@@ -364,22 +334,18 @@ class TestPlan(YAMLObject):
 
     @property
     def name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def rootfs(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._rootfs
 
     @property
     def base_name(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._base_name
 
     @property
     def params(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return dict(self._params)
 
     def get_template_path(self, boot_method):
@@ -389,7 +355,6 @@ class TestPlan(YAMLObject):
         each test plan can have several template variants to accomodate for
         these.  All the other parameters are attributes of the test plan.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._pattern.format(
             category=self._category,
             method=boot_method,
@@ -398,7 +363,6 @@ class TestPlan(YAMLObject):
             plan=self.name)
 
     def match(self, config):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return all(f.match(**config) for f in self._filters)
 
 
@@ -411,7 +375,6 @@ class TestConfig(YAMLObject):
         *device_type* is a DeviceType object.
         *test_plans* is a list of TestPlan objects to run on the device type.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._device_type = device_type
         self._test_plans = {
             t.name: t for t in test_plans
@@ -427,21 +390,17 @@ class TestConfig(YAMLObject):
                            for test in test_config['test_plans']],
             'filters': FilterFactory.from_data(test_config, default_filters),
         }
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return cls(**kw)
 
     @property
     def device_type(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._device_type
 
     @property
     def test_plans(self):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._test_plans
 
     def match(self, arch, flags, config, plan=None):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return (
             (plan is None or (
                 plan in self._test_plans and
@@ -453,7 +412,6 @@ class TestConfig(YAMLObject):
         )
 
     def get_template_path(self, plan):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         test_plan = self._test_plans[plan]
         return test_plan.get_template_path(self._device_type.boot_method)
 
@@ -471,7 +429,6 @@ def from_yaml(yaml_path):
         name: RootFS.from_yaml(fs_types, rootfs)
         for name, rootfs in data['file_systems'].items()
     }
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     plan_filters = FilterFactory.from_yaml(data['test_plan_default_filters'])
 

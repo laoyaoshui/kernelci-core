@@ -433,7 +433,6 @@ def list_kernel_configs(config, kdir, single_variant=None, single_arch=None):
                   combinations that match it
     """
     kernel_configs = set()
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     for variant in config.variants:
         if single_variant and variant.name != single_variant:
