@@ -58,7 +58,7 @@ KERNEL_IMAGE_NAMES = {
 
 
 def _get_last_commit_file_name(config):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(config))
     return '_'.join(['last-commit', config.name])
 
 
@@ -93,7 +93,7 @@ def get_last_commit(config, storage):
         storage=storage, tree=config.tree.name,
         file_name=_get_last_commit_file_name(config))
     last_commit_resp = requests.get(last_commit_url)
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(last_commit_resp))
     if last_commit_resp.status_code != 200:
         return False
     return last_commit_resp.text.strip()
@@ -120,7 +120,7 @@ def get_branch_head(config):
     The returned value is the git SHA of the current head of the branch
     associated with the build config, or None if an error occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(config))
     cmd = "git ls-remote {url} refs/heads/{branch}".format(
         url=config.tree.url, branch=config.branch)
     head = shell_cmd(cmd)
@@ -141,7 +141,8 @@ def check_new_commit(config, storage):
     """
     last_commit = get_last_commit(config, storage)
     branch_head = get_branch_head(config)
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(last_commit))
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(branch_head))
     if not branch_head:
         return False
     elif last_commit == branch_head:
