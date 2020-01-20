@@ -216,7 +216,6 @@ class BuildEnvironment(YAMLObject):
         *cross_compile* is a dictionary mapping kernel CPU architecture names
                         to cross-compiler prefixes.
         """
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._cc = cc
         self._cc_version = str(cc_version)
