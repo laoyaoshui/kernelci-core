@@ -48,9 +48,7 @@ import org.kernelci.util.Job
 def checkConfig(config, kci_core, trees_dir) {
     def commit = sh(
         script: """
-    echo "=======yypp 20000 "+config
-
-$/root/kernelci-core/kci_build \
+/root/kernelci-core/kci_build \
 --yaml-configs=/root/kernelci-core/build-configs.yaml \
 check_new_commit \
 --config=${config} \
