@@ -119,7 +119,7 @@ node() {
                                          returnStdout: true).trim()
                     config_list = raw_configs.tokenize('\n')
                 }
-                echo "=======yypp 10007 " 
+                echo "=======yypp 10007 " +config_list
                 for (String config: config_list) {
                     echo "=======yypp 100081 "+config
                     echo "=======yypp 100082 "+kci_core
