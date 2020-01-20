@@ -102,7 +102,7 @@ def eggCache() {
 def getSHA(kdir) {
     def sha
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         sha = sh(script: "git rev-parse HEAD", returnStdout: true)
     }
 
@@ -112,7 +112,7 @@ def getSHA(kdir) {
 def gitDescribe(kdir) {
     def describe
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         describe = sh(script: "git describe", returnStdout: true).trim()
     }
 
@@ -122,7 +122,7 @@ def gitDescribe(kdir) {
 def createTag(kdir, iteration) {
     def tag = gitDescribe(kdir)
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         tag += "-${env.JOB_NAME}-${currentBuild.number}-${iteration}"
         sh(script: "git tag -a ${tag} -m ${tag} HEAD")
     }
@@ -131,7 +131,7 @@ def createTag(kdir, iteration) {
 }
 
 def removeTag(kdir, tag) {
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         sh(script: "git tag -d ${tag}")
     }
 }
@@ -146,7 +146,7 @@ git checkout --detach ${git_rev}
 }
 
 def setRemote(kdir, name, url) {
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         sh(script: """
 if git remote | grep -e '^${name}\$'; then
     git remote set-url ${name} ${url}
@@ -186,7 +186,7 @@ git clone ${params.KERNEL_URL} ${kdir} \
 """)
     }
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         sh(script: """
 git config user.name 'kernelci.org bot'
 git config user.email bot@kernelci.org
@@ -210,7 +210,7 @@ git symbolic-ref HEAD refs/heads/${params.KERNEL_BRANCH}
 
 def buildKernel(kdir, kci_core) {
     def output = "${kdir}/build-${params.ARCH}-${params.BUILD_ENVIRONMENT}"
-    dir(kci_core) {
+    dir('/root/kernelci-core')) {
         sh(script: "rm -f ${env._BMETA_JSON}")
         sh(script: "rm -f ${env._DTBS_JSON}")
 
@@ -219,7 +219,8 @@ for d in \$(find ${kdir} -name "build-*" -type d); do
   [ "\$d" = "${output}" ] || rm -rf "\$d"
 done
 """)
-
+   dir('/root/kernelci-core')
+   {
         sh(script:"""\
 /root/kernelci-core/kci_build \
 generate_defconfig_fragments \
@@ -252,9 +253,13 @@ install_kernel \
 --branch=${params.KERNEL_BRANCH} \
 --output=${output} \
 """)
+   }
+
 
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
+   dir('/root/kernelci-core')
+   {
             sh(script: """\
 /root/kernelci-core/kci_build \
 push_kernel \
@@ -262,6 +267,7 @@ push_kernel \
 --token=${SECRET} \
 --api=${params.KCI_API_URL} \
 """)
+   }  
         }
 
         dir("${kdir}/_install_") {
@@ -283,7 +289,7 @@ def buildRevision(kdir, kci_core, git_rev, name) {
  */
 
 def fetchLabInfo(kci_core) {
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         def token = "${params.LAB}-lava-api"
 
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
@@ -301,7 +307,7 @@ get_lab_info \
 }
 
 def submitJob(kci_core, describe, hook) {
-    dir(kci_core) {
+    dir('/root/kernelci-core')) {
         sh(script: """\
 rm -f ${env._BMETA_JSON} \
 rm -f ${env._DTBS_JSON} \
@@ -352,7 +358,7 @@ submit \
 def getResult(kci_core, hook) {
     def status = null
 
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         echo "Waiting for job results..."
         def data = waitForWebhook(hook)
         def json_file = 'callback.json'
@@ -409,7 +415,7 @@ def runTest(kci_core, describe, expected=0, runs=0) {
 def findMergeBase(kdir, kci_core, good, bad) {
     def base = good
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         def good_base = sh(
             returnStatus: true,
             script: "git merge-base --is-ancestor ${base} HEAD")
@@ -420,7 +426,8 @@ def findMergeBase(kdir, kci_core, good, bad) {
             def ref_branch = params.REF_KERNEL_BRANCH
 
             if (!(ref_url && ref_tree && ref_branch)) {
-                dir(kci_core) {
+                dir('/root/kernelci-core')
+				{				
                     ref_config = sh(script: """\
                                     /root/kernelci-core/kci_build get_reference --tree-name ${params.KERNEL_TREE} \
                                     --branch ${params.KERNEL_BRANCH}""", returnStdout: true).trim().tokenize("\n")
@@ -453,7 +460,7 @@ Reference:
 def bisectStart(kdir, good, bad) {
     def status = null
 
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         status = sh(returnStatus: true, script: """
 git bisect start
 git bisect good ${good}
@@ -465,7 +472,7 @@ git bisect bad ${bad}
 }
 
 def bisectNext(kdir, status) {
-    dir(kdir) {
+    dir('/root/kernelci-core') {
         sh(script: "git clean -fd")
 
         switch (status) {
@@ -496,7 +503,7 @@ def pushResults(kci_core, kdir, checks, params_summary) {
 ${params.KERNEL_TREE}/${params.KERNEL_BRANCH} bisection: \
 ${params.TEST_PLAN} on ${params.TARGET}"
 
-    dir(kci_core) {
+    dir('/root/kernelci-core')) {
         withCredentials([string(credentialsId: params.KCI_TOKEN_ID,
                                 variable: 'SECRET')]) {
             def egg_cache = eggCache()
@@ -661,7 +668,7 @@ def bisection(kci_core, kdir, checks) {
         return check
 
     stage("Revert") {
-        dir(kdir) {
+        dir('/root/kernelci-core') {
             sh(script: "git revert refs/bisect/bad")
         }
         check = runCheck(kdir, kci_core, 'HEAD', 'revert', 0, 3)

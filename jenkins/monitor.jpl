@@ -107,7 +107,7 @@ node() {
         echo "=======yypp 10004 "
         stage("Monitor") {
             echo "=======yypp 10005 "
-            dir(kci_core) {
+            dir('/root/kernelci-core') {
                 echo "=======yypp 10006 "
                 def config_list = null
                 def config_jobs = [:]

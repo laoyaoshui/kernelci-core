@@ -70,7 +70,7 @@ def generateJobs(kci_core, lab, artifacts, jobs_dir)
 {
     def token = "${lab}-lava-api"
 
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
 /root/kernelci-core/kci_test \
@@ -94,7 +94,7 @@ def submitJobs(kci_core, lab, jobs_dir)
 {
     def token = "${lab}-lava-api"
 
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         withCredentials([string(credentialsId: token, variable: 'SECRET')]) {
             sh(script: """\
 /root/kernelci-core/kci_test \

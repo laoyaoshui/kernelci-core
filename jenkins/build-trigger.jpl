@@ -52,7 +52,7 @@ import org.kernelci.util.Job
 def configAlreadyBuilt(config, kci_core) {
     def new_commit = null
 
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         new_commit = sh(
         script: """\
 /root/kernelci-core/kci_build \
@@ -66,7 +66,7 @@ check_new_commit \
 }
 
 def pushTarball(config, kci_core, mirror, kdir, opts) {
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         sh(script: """\
 /root/kernelci-core/kci_build \
 update_mirror \
@@ -135,7 +135,7 @@ push_tarball \
 }
 
 def listConfigs(config, kci_core, kdir, config_list) {
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         def kernel_config_list_raw = sh(script: """\
 /root/kernelci-core/kci_build \
 list_kernel_configs \
@@ -157,7 +157,7 @@ list_kernel_configs \
 def listArchitectures(kci_core, config) {
     def arch_list = []
 
-    dir(kci_core) {
+    dir('/root/kernelci-core')) {
         def raw_variants = sh(
             script: """\
 /root/kernelci-core/kci_build \
@@ -186,7 +186,7 @@ arch_list \
 }
 
 def addBuildOpts(config, kci_core, opts) {
-    dir(kci_core) {
+    dir('/root/kernelci-core') {
         opts['config'] = config
 
         def opts_raw = sh(
@@ -203,7 +203,7 @@ tree_branch \
 }
 
 def scheduleTests(build_job_name, build_job_number, labs, kci_core) {
-    dir(kci_core) {
+    dir('/root/kernelci-core')) {
         def labs_str = ""
         for (lab in labs)
             labs_str += "${lab} "
@@ -304,7 +304,7 @@ node("docker && build-trigger") {
 
             sh(script: "rm -rf ${labs_info}; mkdir -p ${labs_info}")
 
-            dir(kci_core) {
+            dir('/root/kernelci-core') {
                 def raw_lab_names = sh(
                     script: "/root/kernelci-core/kci_test list_labs", returnStdout: true).trim()
                 def all_lab_names = raw_lab_names.tokenize('\n')

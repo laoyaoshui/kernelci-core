@@ -49,7 +49,8 @@ def dockerImageName(kci_core, build_env, kernel_arch) {
     def cc = null
     echo "===== yypp job 20000 "
 
-    dir(kci_core) {
+       dir('/root/kernelci-core')
+       {
         def build_env_raw = sh(
             script: "/root/kernelci-core/kci_build show_build_env --build-env=${build_env}",
             returnStdout: true).trim()
