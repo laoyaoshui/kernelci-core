@@ -47,14 +47,16 @@ import org.kernelci.util.Job
 
 def dotest() {
     echo "=======yypp 20000 "
-   /*result = sh(script: "/root/hello.sh", returnStatus: true).trim()*/
+   result = sh(script: "/root/hello.sh", returnStatus: true).trim()
    /*sh 'echo hello'*/
+   /*
    def exitValue = sh(script: "echo hello ", returnStatus: true)
     echo "return exitValue :${exitValue}"
     if(exitValue != 0){
         echo "=======yypp 20001 "    
     }
     echo "=======yypp 20002 "
+    */
 }
 
 node() {
