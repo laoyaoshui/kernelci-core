@@ -17,8 +17,6 @@
 
 import os
 import urllib.parse
-import sys
-from MyUtil import MyUtil
 
 
 def match_configs(configs, bmeta, dtbs, lab):

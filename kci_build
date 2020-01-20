@@ -22,15 +22,12 @@ import sys
 from kernelci.cli import Args, Command, parse_args
 import kernelci.build
 import kernelci.config.build
-import sys
-from MyUtil import MyUtil
 
 
 class cmd_list_configs(Command):
     help = "List the build configurations"
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         for conf_name in list(configs['build_configs'].keys()):
             print(conf_name)
         return True
@@ -41,8 +38,6 @@ class cmd_check_new_commit(Command):
     args = [Args.config, Args.storage]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(configs))
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(args))
         conf = configs['build_configs'][args.config]
         update = kernelci.build.check_new_commit(conf, args.storage)
         if update is False or update is True:
@@ -56,7 +51,6 @@ class cmd_update_last_commit(Command):
     args = [Args.config, Args.api, Args.token, Args.commit]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         kernelci.build.set_last_commit(conf, args.api, args.token, args.commit)
         return True
@@ -67,7 +61,6 @@ class cmd_tree_branch(Command):
     args = [Args.config]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         print(conf.tree.name)
         print(conf.tree.url)
@@ -80,7 +73,6 @@ class cmd_update_mirror(Command):
     args = [Args.config, Args.mirror]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         kernelci.build.update_mirror(conf, args.mirror)
         return True
@@ -92,7 +84,6 @@ class cmd_update_repo(Command):
     opt_args = [Args.mirror]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         kernelci.build.update_repo(conf, args.kdir, args.mirror)
         return True
@@ -103,7 +94,6 @@ class cmd_describe(Command):
     args = [Args.config, Args.kdir]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         commit = kernelci.build.head_commit(args.kdir)
         describe = kernelci.build.git_describe(conf.tree.name, args.kdir)
@@ -119,7 +109,6 @@ class cmd_generate_fragments(Command):
     args = [Args.config, Args.kdir]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         kernelci.build.generate_fragments(conf, args.kdir)
         return True
@@ -130,7 +119,6 @@ class cmd_generate_defconfig_fragments(Command):
     args = [Args.defconfig, Args.kdir]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         fragments = configs['fragments']
         split = args.defconfig.split('+')
         defconfig = split.pop(0)
@@ -146,7 +134,6 @@ class cmd_expand_fragments(Command):
     args = [Args.defconfig]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         frags = configs['fragments']
         split = args.defconfig.split('+')
         expanded = [split.pop(0)]
@@ -165,7 +152,6 @@ class cmd_push_tarball(Command):
     args = [Args.config, Args.kdir, Args.storage, Args.api, Args.token]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         func_args = (conf, args.kdir, args.storage, args.api, args.token)
         if not all(func_args):
@@ -183,7 +169,6 @@ class cmd_list_variants(Command):
     args = [Args.config]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         for variant in conf.variants:
             print(variant.name)
@@ -195,7 +180,6 @@ class cmd_arch_list(Command):
     args = [Args.config, Args.variant]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         variant = conf.get_variant(args.variant)
         for arch in variant.arch_list:
@@ -204,7 +188,6 @@ class cmd_arch_list(Command):
 
 
 def _show_build_env(build_env, arch=None):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     print(build_env.name)
     print(build_env.cc)
     print(build_env.cc_version)
@@ -221,7 +204,6 @@ class cmd_get_build_env(Command):
     opt_args = [Args.arch]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         variant = conf.get_variant(args.variant)
         _show_build_env(variant.build_environment, args.arch)
@@ -233,7 +215,6 @@ class cmd_get_reference(Command):
     args = [Args.tree_name, Args.branch]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         for conf in configs['build_configs'].values():
             if conf.tree.name == args.tree_name and conf.branch == args.branch:
                 if conf.reference:
@@ -250,7 +231,6 @@ class cmd_show_build_env(Command):
     opt_args = [Args.arch]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         build_env = configs['build_environments'][args.build_env]
         _show_build_env(build_env, args.arch)
         return True
@@ -262,7 +242,6 @@ class cmd_list_kernel_configs(Command):
     opt_args = [Args.variant, Args.arch]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         conf = configs['build_configs'][args.config]
         configs = kernelci.build.list_kernel_configs(
             conf, args.kdir, args.variant, args.arch)
@@ -277,7 +256,6 @@ class cmd_build_kernel(Command):
     opt_args = [Args.defconfig, Args.j, Args.verbose, Args.output]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         build_env = configs['build_environments'][args.build_env]
         return kernelci.build.build_kernel(
             build_env, args.kdir, args.arch, args.defconfig, args.j,
@@ -292,7 +270,6 @@ class cmd_install_kernel(Command):
                 Args.output, Args.publish_path]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         if args.config:
             conf = configs['build_configs'][args.config]
             tree_name = conf.tree.name
@@ -320,7 +297,6 @@ class cmd_push_kernel(Command):
     args = [Args.kdir, Args.api, Args.token]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return kernelci.build.push_kernel(args.kdir, args.api, args.token)
 
 
@@ -330,7 +306,6 @@ class cmd_publish_kernel(Command):
     opt_args = [Args.api, Args.token, Args.json_path]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         if not ((args.api and args.token) or args.json_path):
             print("""\
 Invalid arguments, please provide at least one of these sets of options:
@@ -349,7 +324,6 @@ class cmd_pull_tarball(Command):
     opt_args = [Args.filename, Args.retries]
 
     def __call__(self, configs, args):
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return kernelci.build.pull_tarball(args.kdir, args.url,
                                            args.filename, args.retries)
 

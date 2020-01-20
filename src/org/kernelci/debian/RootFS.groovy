@@ -99,7 +99,7 @@ def makeImageStep(String pipeline_version,
                   String test_overlay,
                   String docker_image) {
     return {
-        node("docker && debos") {
+        node() {
             stage("Checkout") {
                 checkout scm
             }

@@ -21,8 +21,6 @@
 from jinja2 import Environment, FileSystemLoader
 import os
 from kernelci.lab import LabAPI
-import sys
-from MyUtil import MyUtil
 
 DEVICE_ONLINE_STATUS = ['idle', 'running', 'reserved']
 

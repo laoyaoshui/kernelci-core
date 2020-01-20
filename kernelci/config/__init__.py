@@ -17,8 +17,6 @@
 
 import re
 import yaml
-import sys
-from MyUtil import MyUtil
 
 
 # -----------------------------------------------------------------------------

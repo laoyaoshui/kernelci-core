@@ -19,8 +19,6 @@ import importlib
 import json
 import urllib.parse
 import xmlrpc.client
-import sys
-from MyUtil import MyUtil
 
 
 class LabAPI(object):

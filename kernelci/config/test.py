@@ -16,8 +16,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import yaml
-import sys
-from MyUtil import MyUtil
 
 from kernelci.config import FilterFactory, YAMLObject
 
@@ -390,6 +388,7 @@ class TestConfig(YAMLObject):
                            for test in test_config['test_plans']],
             'filters': FilterFactory.from_data(test_config, default_filters),
         }
+
         return cls(**kw)
 
     @property

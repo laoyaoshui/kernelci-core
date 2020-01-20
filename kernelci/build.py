@@ -58,7 +58,6 @@ KERNEL_IMAGE_NAMES = {
 
 
 def _get_last_commit_file_name(config):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(config))
     return '_'.join(['last-commit', config.name])
 
 
@@ -73,7 +72,6 @@ def _upload_files(api, token, path, input_files):
         'file{}'.format(i): (name, fobj)
         for i, (name, fobj) in enumerate(input_files.items())
     }
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     url = urllib.parse.urljoin(api, 'upload')
     resp = requests.post(url, headers=headers, data=data, files=files)
     MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
@@ -93,7 +91,7 @@ def get_last_commit(config, storage):
         storage=storage, tree=config.tree.name,
         file_name=_get_last_commit_file_name(config))
     last_commit_resp = requests.get(last_commit_url)
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(last_commit_resp))
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if last_commit_resp.status_code != 200:
         return False
     return last_commit_resp.text.strip()
@@ -107,7 +105,6 @@ def set_last_commit(config, api, token, commit):
     *token* is the backend API token to use
     *commit* is the git SHA to send
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     _upload_files(api, token, config.tree.name,
                   {_get_last_commit_file_name(config): commit})
 
@@ -120,7 +117,6 @@ def get_branch_head(config):
     The returned value is the git SHA of the current head of the branch
     associated with the build config, or None if an error occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(config))
     cmd = "git ls-remote {url} refs/heads/{branch}".format(
         url=config.tree.url, branch=config.branch)
     head = shell_cmd(cmd)
@@ -141,8 +137,6 @@ def check_new_commit(config, storage):
     """
     last_commit = get_last_commit(config, storage)
     branch_head = get_branch_head(config)
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(last_commit))
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(branch_head))
     if not branch_head:
         return False
     elif last_commit == branch_head:
@@ -152,7 +146,6 @@ def check_new_commit(config, storage):
 
 
 def _update_remote(config, path):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     shell_cmd("""
 set -e
 cd {path}
@@ -168,7 +161,6 @@ fi
 
 
 def _fetch_tags(path, url=TORVALDS_GIT_URL):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     shell_cmd("""
 set -e
 cd {path}
@@ -182,7 +174,6 @@ def update_mirror(config, path):
     *config* is a BuildConfig object
     *path* is the path to the local mirror
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if not os.path.exists(path):
         shell_cmd("""
 set -e
@@ -201,7 +192,6 @@ def update_repo(config, path, ref=None):
     *path* is the path to the local git repo
     *ref* is the path to a reference repo, typically a mirror
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")    
     if not os.path.exists(path):
         ref_opt = '--reference={ref}'.format(ref=ref) if ref else ''
         shell_cmd("git clone {ref} -o {remote} {url} {path}".format(
@@ -229,7 +219,6 @@ def head_commit(path):
     The returned value is the git SHA of the current HEAD of the branch checked
     out in the local git repository.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     cmd = """
 set -e
 cd {path}
@@ -248,7 +237,6 @@ def git_describe(tree_name, path):
     The returned value is a string with the "git describe" for the commit
     currently checked out in the local git repository.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     describe_args = r"--match=v\*" if tree_name == "soc" else ""
     cmd = """
 set -e
@@ -268,7 +256,6 @@ def git_describe_verbose(path):
     the commit currently checked out in the local git repository.  This is
     typically based on a mainline kernel version tag.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     cmd = r"""
 set -e
 cd {path}
@@ -284,7 +271,6 @@ def add_kselftest_fragment(path, frag_path='kernel/configs/kselftest.config'):
     *path* is the path to the local kernel git repository
     *frag_path* is the path where to create the fragment within the repo
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     shell_cmd(r"""
 set -e
 cd {path}
@@ -307,7 +293,6 @@ def make_tarball(kdir, tarball_name):
     *kdir* is the path to the local kernel source directory
     *tarball_name* is the name of the tarball file to create
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     cwd = os.getcwd()
     os.chdir(kdir)
     _, dirs, files = next(os.walk('.'))
@@ -323,7 +308,6 @@ def generate_config_fragment(frag, kdir):
     *frag* is a Fragment object
     *kdir* is the path to a kernel source directory
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     with open(os.path.join(kdir, frag.path), 'w') as f:
         for kernel_config in frag.configs:
             f.write(kernel_config + '\n')
@@ -335,7 +319,6 @@ def generate_fragments(config, kdir):
     *config* is a BuildConfig object
     *kdir* is the path to a kernel source directory
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     for variant in config.variants:
         for frag in variant.fragments:
             print(frag.path)
@@ -359,7 +342,6 @@ def push_tarball(config, kdir, storage, api, token):
 
     The returned value is the URL of the uploaded tarball.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     tarball_name = "linux-src_{}.tar.gz".format(config.name)
     describe = git_describe(config.tree.name, kdir)
     tarball_url = '/'.join([
@@ -378,7 +360,6 @@ def push_tarball(config, kdir, storage, api, token):
 
 
 def _download_file(url, dest_filename, chunk_size=1024):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     resp = requests.get(url, stream=True)
     MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if resp.status_code == 200:
@@ -391,7 +372,6 @@ def _download_file(url, dest_filename, chunk_size=1024):
 
 
 def pull_tarball(kdir, url, dest_filename, retries):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if os.path.exists(kdir):
         shutil.rmtree(kdir)
     os.makedirs(kdir)
@@ -408,7 +388,6 @@ def pull_tarball(kdir, url, dest_filename, retries):
 
 
 def _add_frag_configs(kdir, frag_list, frag_paths, frag_configs):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     for frag in frag_list:
         if os.path.exists(os.path.join(kdir, frag.path)):
             if frag.defconfig:
@@ -465,7 +444,6 @@ def list_kernel_configs(config, kdir, single_variant=None, single_arch=None):
 
 
 def _output_to_file(cmd, log_file, rel_dir=None):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     open(log_file, 'a').write("#\n# {}\n#\n".format(cmd))
     if rel_dir:
         log_file = os.path.relpath(log_file, rel_dir)
@@ -478,7 +456,6 @@ def _run_make(kdir, arch, target=None, jopt=None, silent=True, cc='gcc',
               cross_compile=None, use_ccache=None, output=None, log_file=None,
               opts=None):
     args = ['make']
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     if opts:
         args += ['='.join([k, v]) for k, v in opts.items()]
@@ -522,7 +499,6 @@ def _run_make(kdir, arch, target=None, jopt=None, silent=True, cc='gcc',
 def _make_defconfig(defconfig, kwargs, extras, verbose, log_file):
     kdir, output_path = (kwargs.get(k) for k in ('kdir', 'output'))
     result = True
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     defconfig_kwargs = dict(kwargs)
     defconfig_opts = dict(defconfig_kwargs['opts'])
@@ -589,7 +565,6 @@ scripts/kconfig/merge_config.sh -O {output} '{base}' '{frag}' {redir}
 
 
 def _kernel_config_enabled(dot_config, name):
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     return shell_cmd('grep -cq CONFIG_{}=y {}'.format(name, dot_config), True)
 
 
@@ -608,7 +583,6 @@ def build_kernel(build_env, kdir, arch, defconfig=None, jopt=None,
     The returned value is True if the build was successful or False if there
     was any build error.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     cc = build_env.cc
     cross_compile = build_env.get_cross_compile(arch) or ''
     use_ccache = shell_cmd("which ccache > /dev/null", True)
@@ -745,7 +719,6 @@ def install_kernel(kdir, tree_name, tree_url, git_branch, git_commit=None,
     The returned value is True if it was done successfully or False if an error
     occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     install_path = os.path.join(kdir, install)
     if not output_path:
         output_path = os.path.join(kdir, 'build')
@@ -871,7 +844,6 @@ def push_kernel(kdir, api, token, install='_install_'):
     The returned value is True if it was done successfully or False if an error
     occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     install_path = os.path.join(kdir, install)
 
     with open(os.path.join(install_path, 'bmeta.json')) as f:
@@ -909,7 +881,6 @@ def publish_kernel(kdir, install='_install_', api=None, token=None,
     The returned value is True if it was done successfully or False if an error
     occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     install_path = os.path.join(kdir, install)
 
     with open(os.path.join(install_path, 'bmeta.json')) as f:
@@ -962,7 +933,6 @@ def load_json(bmeta_json, dtbs_json):
 
     The returned value is a 2-tuple with the bmeta and dtbs data.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     with open(bmeta_json) as json_file:
         bmeta = json.load(json_file)
     with open(dtbs_json) as json_file:

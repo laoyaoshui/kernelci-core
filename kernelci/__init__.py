@@ -16,8 +16,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import subprocess
-import sys
-from MyUtil import MyUtil
 
 
 def shell_cmd(cmd, ret_code=False):

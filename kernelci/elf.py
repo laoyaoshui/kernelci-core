@@ -25,8 +25,6 @@ import elftools.elf.constants as elfconst
 import elftools.elf.elffile as elffile
 import io
 import os
-import sys
-from MyUtil import MyUtil
 
 # Default section names and their build document keys to look in the ELF file.
 # These are supposed to always be available.
