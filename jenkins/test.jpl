@@ -47,7 +47,8 @@ import org.kernelci.util.Job
 
 def dotest() {
     echo "=======yypp 20000 "
-   result = sh(script: "/root/hello.sh", returnStatus: true).trim()
+   /*result = sh(script: "/root/hello.sh", returnStatus: true).trim()*/
+   sh 'echo hello'
     echo "=======yypp 20001 "
 }
 
