@@ -139,9 +139,9 @@ def check_new_commit(config, storage):
     one, or True if the last built commit is the same as the branch head
     (nothing to do), or False if an error occurred.
     """
-    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     last_commit = get_last_commit(config, storage)
     branch_head = get_branch_head(config)
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if not branch_head:
         return False
     elif last_commit == branch_head:
