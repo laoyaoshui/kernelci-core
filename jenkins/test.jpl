@@ -51,7 +51,7 @@ def dotest() {
    dir('/root/kernelci-core')
    {
     echo "=======yypp 20000 "
-   result = sh(script: "./kci_build list_configs", returnStatus: true).trim()
+   result = sh(script: "./kci_build list_configs", returnStatus: true)
     echo "=======yypp 20001 "+result   
    }
 
