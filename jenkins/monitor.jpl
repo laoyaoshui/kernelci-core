@@ -46,6 +46,8 @@ DOCKER_BASE (kernelci/build-)
 import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {
+    echo "=======yypp 20000 " +config+" "
+
     def commit = sh(
         script: """
 /root/kernelci-core/kci_build \
