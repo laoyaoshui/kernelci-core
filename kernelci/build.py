@@ -294,6 +294,8 @@ def make_tarball(kdir, tarball_name):
     *tarball_name* is the name of the tarball file to create
     """
     cwd = os.getcwd()
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(cwd))
+
     os.chdir(kdir)
     _, dirs, files = next(os.walk('.'))
     with tarfile.open(os.path.join(cwd, tarball_name), 'w:gz') as tarball:
