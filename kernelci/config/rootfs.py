@@ -16,25 +16,31 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import yaml
+import sys
+from MyUtil import MyUtil
 
 from kernelci.config import YAMLObject
 
 
 class RootFS(YAMLObject):
     def __init__(self, name, rootfs_type):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._rootfs_type = rootfs_type
 
     @classmethod
     def from_yaml(cls, rootfs, kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return cls(**kw)
 
     @property
     def name(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def rootfs_type(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._rootfs_type
 
 
@@ -43,6 +49,7 @@ class RootFS_Debos(RootFS):
                  arch_list=None, extra_packages=None,
                  extra_packages_remove=None,
                  extra_files_remove=None, script=""):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
         super(RootFS_Debos, self).__init__(name, rootfs_type)
         self._debian_release = debian_release
@@ -54,6 +61,7 @@ class RootFS_Debos(RootFS):
 
     @classmethod
     def from_yaml(cls, config, name):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         kw = name
         kw.update(cls._kw_from_yaml(
             config, ['name', 'debian_release', 'arch_list',
@@ -63,26 +71,32 @@ class RootFS_Debos(RootFS):
 
     @property
     def debian_release(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._debian_release
 
     @property
     def arch_list(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._arch_list)
 
     @property
     def extra_packages(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._extra_packages)
 
     @property
     def extra_packages_remove(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._extra_packages_remove)
 
     @property
     def extra_files_remove(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return list(self._extra_files_remove)
 
     @property
     def script(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._script
 
 
@@ -93,6 +107,7 @@ class RootFSFactory(YAMLObject):
 
     @classmethod
     def from_yaml(cls, name, rootfs):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         rootfs_type = rootfs.get('rootfs_type')
         kw = {
             'name': name,
@@ -103,6 +118,7 @@ class RootFSFactory(YAMLObject):
 
 
 def from_yaml(yaml_path):
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     with open(yaml_path) as f:
         data = yaml.safe_load(f)
 

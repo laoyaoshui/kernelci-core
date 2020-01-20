@@ -16,9 +16,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import subprocess
+import sys
+from MyUtil import MyUtil
 
 
 def shell_cmd(cmd, ret_code=False):
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     if ret_code:
         return False if subprocess.call(cmd, shell=True) else True
     else:

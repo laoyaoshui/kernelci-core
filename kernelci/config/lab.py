@@ -16,6 +16,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import yaml
+import sys
+from MyUtil import MyUtil
 
 from kernelci.config import FilterFactory, YAMLObject
 
@@ -32,6 +34,7 @@ class Lab(YAMLObject):
         *url* is the URL to reach the lab API.
         *filters* is a list of Filter objects associated with this lab.
         """
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._name = name
         self._lab_type = lab_type
         self._url = url
@@ -39,36 +42,44 @@ class Lab(YAMLObject):
 
     @classmethod
     def from_yaml(cls, lab, kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return cls(**kw)
 
     @property
     def name(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._name
 
     @property
     def lab_type(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._lab_type
 
     @property
     def url(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._url
 
     def match(self, data):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return all(f.match(**data) for f in self._filters)
 
 
 class Lab_LAVA(Lab):
 
     def __init__(self, priority='medium', *args, **kwargs):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         super(Lab_LAVA, self).__init__(*args, **kwargs)
         self._priority = priority
 
     @property
     def priority(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._priority
 
     @classmethod
     def from_yaml(cls, lab, kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         priority = lab.get('priority')
         if priority:
             kw['priority'] = priority
@@ -84,6 +95,7 @@ class LabFactory(YAMLObject):
 
     @classmethod
     def from_yaml(cls, name, lab):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         lab_type = lab.get('lab_type')
         kw = cls._kw_from_yaml(lab, ['url'])
         kw.update({
@@ -96,6 +108,7 @@ class LabFactory(YAMLObject):
 
 
 def from_yaml(yaml_path):
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     with open(yaml_path) as f:
         data = yaml.safe_load(f)
 

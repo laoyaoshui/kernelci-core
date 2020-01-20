@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+import sys
+from MyUtil import MyUtil
 
 
 def get_device_type_by_name(name, device_types, aliases=[]):
@@ -37,6 +39,7 @@ def get_device_type_by_name(name, device_types, aliases=[]):
             {'busy': 1, 'idle': 0, 'name': 'x15', 'offline': 0}
 
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     for device_type in device_types:
         if device_type["name"] == name:
             return device_type

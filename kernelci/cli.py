@@ -16,6 +16,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import argparse
+import sys
+from MyUtil import MyUtil
 
 
 # -----------------------------------------------------------------------------
@@ -31,6 +33,7 @@ class Args(object):
     add_argument() method of the parser object from argparse.  There should
     also always be a `help` attribute, as this is needed by the Command class.
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     config = {
         'name': '--config',
@@ -243,6 +246,7 @@ class Command(object):
     help = None
     args = None
     opt_args = None
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
 
     def __init__(self, sub_parser, name):
         """This class is to facilitate creating command line utilities
@@ -284,6 +288,7 @@ def make_parser(title, default_yaml):
     *title* is the title of the parser
     *default_yaml* is the default YAML config file name to use
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     parser = argparse.ArgumentParser(title)
     parser.add_argument("--yaml-configs", default=default_yaml,
                         help="Path to the YAML configs file")
@@ -299,6 +304,7 @@ def add_subparser(parser, glob):
     *parser* is the main parser object from argparse
     *glob* is the globals dictionary
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     sub_parser = parser.add_subparsers(title="Commands",
                                        help="List of available commands")
     commands = dict()
@@ -325,6 +331,7 @@ def parse_args(title, default_yaml, glob):
     *glob* is the dictionary with all the global attributes where to look for
            commands starting with `cmd_`
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     parser = make_parser(title, default_yaml)
     add_subparser(parser, glob)
     args = parser.parse_args()

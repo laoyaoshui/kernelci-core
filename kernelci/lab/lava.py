@@ -21,6 +21,8 @@
 from jinja2 import Environment, FileSystemLoader
 import os
 from kernelci.lab import LabAPI
+import sys
+from MyUtil import MyUtil
 
 DEVICE_ONLINE_STATUS = ['idle', 'running', 'reserved']
 
@@ -41,6 +43,7 @@ def get_device_type_by_name(name, device_types, aliases=[]):
             'am57xx-beagle-x15'
 
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     for device_type in device_types:
         if device_type == name:
             return device_type
@@ -63,12 +66,14 @@ class LAVA(LabAPI):
     """
 
     def _get_aliases(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         aliases = []
         for alias in self._server.scheduler.aliases.list():
             aliases.append(self._server.scheduler.aliases.show(alias))
         return aliases
 
     def _get_devices(self):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         all_devices = self._server.scheduler.all_devices()
         all_aliases = []
         for alias in self._server.scheduler.aliases.list():
@@ -91,6 +96,7 @@ class LAVA(LabAPI):
         }
 
     def _add_callback_params(self, params, opts):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         callback_id = opts.get('id')
         if not callback_id:
             return
@@ -107,6 +113,7 @@ class LAVA(LabAPI):
         })
 
     def device_type_online(self, device_type):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         devices = self.devices['device_type_online']
         device_type_name = get_device_type_by_name(
             device_type.base_name, list(devices.keys()),
@@ -114,9 +121,11 @@ class LAVA(LabAPI):
         return self.devices['device_type_online'].get(device_type_name, False)
 
     def job_file_name(self, params):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return '.'.join([params['name'], 'yaml'])
 
     def generate(self, params, target, plan, callback_opts):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         short_template_file = plan.get_template_path(target.boot_method)
         template_file = os.path.join('templates', short_template_file)
         if not os.path.exists(template_file):
@@ -139,9 +148,11 @@ class LAVA(LabAPI):
         return data
 
     def submit(self, job):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return self._server.scheduler.submit_job(job)
 
 
 def get_api(lab):
     """Get a LAVA lab API object"""
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
     return LAVA(lab)

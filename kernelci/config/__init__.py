@@ -17,6 +17,8 @@
 
 import re
 import yaml
+import sys
+from MyUtil import MyUtil
 
 
 # -----------------------------------------------------------------------------
@@ -37,6 +39,7 @@ class YAMLObject(object):
         the returned keywords, relying on default values in object
         constructors.
         """
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         return {
             k: v for k, v in ((k, data.get(k)) for k in args) if v
         } if data else dict()
@@ -47,10 +50,12 @@ class Filter(object):
 
     def __init__(self, items):
         """The *items* can be any data used to filter configurations."""
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._items = items
 
     def match(self, **kw):
         """Return True if the given *kw* keywords match the filter."""
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         raise NotImplementedError("Filter.match() is not implemented")
 
 
@@ -63,6 +68,7 @@ class Blacklist(Filter):
     """
 
     def match(self, **kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         for k, v in kw.items():
             bl = self._items.get(k)
             if not bl:
@@ -82,6 +88,7 @@ class Whitelist(Filter):
     """
 
     def match(self, **kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         for k, wl in self._items.items():
             v = kw.get(k)
             if not v:
@@ -102,10 +109,12 @@ class Regex(Filter):
     """
 
     def __init__(self, *args, **kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         super(Regex, self).__init__(*args, **kw)
         self._re_items = {k: re.compile(v) for k, v in self._items.items()}
 
     def match(self, **kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         for k, r in self._re_items.items():
             v = kw.get(k)
             return v and r.match(v)
@@ -122,10 +131,12 @@ class Combination(Filter):
     """
 
     def __init__(self, items):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         self._keys = tuple(items['keys'])
         self._values = list(tuple(values) for values in items['values'])
 
     def match(self, **kw):
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         filter_values = tuple(kw.get(k) for k in self._keys)
         return filter_values in self._values
 
@@ -143,6 +154,7 @@ class FilterFactory(YAMLObject):
     @classmethod
     def from_yaml(cls, filter_params):
         """Iterate through the YAML filters and return Filter objects."""
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         filter_list = []
         for f in filter_params:
             for filter_type, items in f.items():
@@ -158,5 +170,6 @@ class FilterFactory(YAMLObject):
         is one, iterate over each item to return a list of Filter objects.
         Otherwise, return *default_filters*.
         """
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"unixsocket")
         params = data.get('filters')
         return cls.from_yaml(params) if params else default_filters
