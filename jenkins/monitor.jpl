@@ -54,14 +54,15 @@ check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
 """, returnStdout: true).trim()
+    echo "=======yypp monitor 60000 "
 
     if (!commit) {
+        echo "=======yypp monitor 60001 "
         print("${config}: no new commit")
         return
     }
-
+    echo "=======yypp monitor 60002 "
     print("${config}: triggering build")
-
     def job = "kernel-build-trigger"
     def str_params = [
         'BUILD_CONFIG': config,
@@ -69,35 +70,35 @@ check_new_commit \
     def job_params = []
     def j = new Job()
     j.addStrParams(job_params, str_params)
-
+    echo "=======yypp monitor 60003 "
     build(job: job, parameters: job_params, propagate: false, wait: false)
+    echo "=======yypp monitor 60004 "
 }
 
 node() {
-    echo "=======yypp 10000 "
     def j = new Job()
     def kci_core = "/var/kernelci-core"
     def trees_dir = "/var/trees"
     def docker_image = "${params.DOCKER_BASE}base"
-    echo "=======yypp 10000 "
+    echo "=======yypp monitor 100001 "
     print("""\
     Storage:   ${params.KCI_STORAGE_URL}
     Container: ${docker_image}""")
-    echo "=======yypp 10001 "+docker_image
+    echo "=======yypp monitor 10001 "+docker_image
     j.dockerPullWithRetry(docker_image).inside() {
-        echo "=======yypp 10002 "
+        echo "=======yypp monitor 10002 "
         stage("Init") {
             timeout(time: 15, unit: 'MINUTES') {
-                echo "=======yypp 10003 "
+                echo "=======yypp monitor 10003 "+params.KCI_CORE_URL+" "+params.KCI_CORE_BRANCH
                 j.cloneKciCore(
                     kci_core, params.KCI_CORE_URL, params.KCI_CORE_BRANCH)
             }
         }
-        echo "=======yypp 10004 "
+        echo "=======yypp monitor 10004 "
         stage("Monitor") {
-            echo "=======yypp 10005 "
+            echo "=======yypp monitor 10005 "
             dir(kci_core) {
-                echo "=======yypp 10006 "
+                echo "=======yypp monitor 10006 "
                 def config_list = null
                 def config_jobs = [:]
 
@@ -108,17 +109,17 @@ node() {
                                          returnStdout: true).trim()
                     config_list = raw_configs.tokenize('\n')
                 }
-                echo "=======yypp 10007 " 
+                echo "=======yypp monitor 10007 " 
                 for (String config: config_list) {
-                    echo "=======yypp 10008 "
+                    echo "=======yypp monitor 10008 "
                     def config_name = config
                     config_jobs[config_name] = {
                         checkConfig(config_name, kci_core, trees_dir)
                     }
                 }
-                echo "=======yypp 10009 "+config_jobs
+                echo "=======yypp monitor 10009 "+config_jobs
                 parallel(config_jobs)
-                echo "=======yypp 10010 "
+                echo "=======yypp monitor 10010 "
             }
         }
     }
