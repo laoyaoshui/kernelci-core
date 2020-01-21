@@ -271,6 +271,7 @@ def add_kselftest_fragment(path, frag_path='kernel/configs/kselftest.config'):
     *path* is the path to the local kernel git repository
     *frag_path* is the path where to create the fragment within the repo
     """
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(cwd))
     shell_cmd(r"""
 set -e
 cd {path}
@@ -446,6 +447,7 @@ def list_kernel_configs(config, kdir, single_variant=None, single_arch=None):
 
 
 def _output_to_file(cmd, log_file, rel_dir=None):
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(cwd))
     open(log_file, 'a').write("#\n# {}\n#\n".format(cmd))
     if rel_dir:
         log_file = os.path.relpath(log_file, rel_dir)

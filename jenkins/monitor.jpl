@@ -92,6 +92,7 @@ node() {
                 echo "=======yypp monitor 10003 "+params.KCI_CORE_URL+" "+params.KCI_CORE_BRANCH
                 j.cloneKciCore(
                     kci_core, params.KCI_CORE_URL, params.KCI_CORE_BRANCH)
+                echo "=======yypp monitor 100031 "    
             }
         }
         echo "=======yypp monitor 10004 "
@@ -116,6 +117,7 @@ node() {
                     config_jobs[config_name] = {
                         checkConfig(config_name, kci_core, trees_dir)
                     }
+                    echo "=======yypp monitor 100081 "
                 }
                 echo "=======yypp monitor 10009 "+config_jobs
                 parallel(config_jobs)

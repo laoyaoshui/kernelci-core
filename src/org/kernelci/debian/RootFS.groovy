@@ -46,6 +46,7 @@ def buildImage(config) {
 
     /* debos will always run the extra packages step, so let's make sure it has
      * something to install */
+    echo "====== yypp rootfs 100000 "
     def extraPackages = "bash"
     if (config.extra_packages != null) {
         extraPackages = config.extra_packages
