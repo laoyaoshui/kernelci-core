@@ -53,7 +53,7 @@ ${kci_core}/kci_build \
 check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
-""", returnStdout: true).trim()
+""", returnStdout: true)
     echo "=======yypp monitor 60000 "
 
     if (!commit) {
