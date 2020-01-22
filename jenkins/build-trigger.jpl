@@ -281,10 +281,10 @@ def buildsComplete(job, opts, arch) {
 
 node("") {
     def j = new Job()
-    def kci_core = "/var/lib/jenkins/kernelci-core"
-    def kdir = "/var/configs/${params.BUILD_CONFIG}"
-    def mirror = "/var/linux.git"
-    def labs_info = "/var/labs"
+    def kci_core = "/var/lib/jenkins/workspace/monitor/kernelci-core"
+    def kdir = "/var/lib/jenkins/workspace/monitor/configs/${params.BUILD_CONFIG}"
+    def mirror = "/var/lib/jenkins/workspace/monitor/linux.git"
+    def labs_info = "/var/lib/jenkins/workspace/monitor/labs"
     def docker_image = "${params.DOCKER_BASE}base"
     def opts = [:]
     def configs = []

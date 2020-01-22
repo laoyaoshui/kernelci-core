@@ -46,6 +46,8 @@ DOCKER_BASE (kernelci/build-)
 import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {
+      echo "=======yypp monitor 60000 "
+
     def commit = sh(
         script: """
 ${kci_core}/kci_build \
@@ -54,7 +56,6 @@ check_new_commit \
 --config=${config} \
 --storage=${params.KCI_STORAGE_URL} \
 """, returnStdout: true)
-    echo "=======yypp monitor 60000 "
 
     if (!commit) {
         echo "=======yypp monitor 60001 "
@@ -77,8 +78,8 @@ check_new_commit \
 
 node() {
     def j = new Job()
-    def kci_core = "/var/lib/jenkins/kernelci-core"
-    def trees_dir = "/var/lib/jenkins/trees"
+    def kci_core = "/var/lib/jenkins/workspace/monitor/monitor/kernelci-core"
+    def trees_dir = "/var/lib/jenkins/workspace/monitor/monitor/trees"
     def docker_image = "${params.DOCKER_BASE}base"
     echo "=======yypp monitor 100000 "
     print("""\

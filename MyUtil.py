@@ -7,7 +7,7 @@ class MyUtil:
         #if (sys.platform=="win32"):
         #    f=open("d:\\log.txt","a+")
         #else:
-        f=open("/var/lib/jenkins/backlog.txt", "a+")
+        f=open("/var/lib/jenkins/workspace/monitor/backlog.txt", "a+")
         f.write(str_content)
         f.close()
 
