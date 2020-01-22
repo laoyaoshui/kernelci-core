@@ -110,7 +110,7 @@ submit \
 
 node("") {
     def j = new Job()
-    def kci_core = "$/var/kernelci-core"
+    def kci_core = "$/var/lib/kernelci-core"
     def jobs_dir = "/var/jobs"
     def artifacts = "/var/artifacts"
     def docker_image = "${params.DOCKER_BASE}base"

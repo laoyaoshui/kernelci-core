@@ -40,7 +40,7 @@ def cloneKciCore(path, url, branch) {
     echo "======= yypp job 10000 "+path+" "+url+" "+branch
     sh(script: "rm -rf ${path}")
     dir("${path}") {
-        echo "======= yypp job 100001 "
+        echo "======= yypp job 100001 "+url+" "+branch
         git(url: url,
             branch: branch,
             poll: false)
