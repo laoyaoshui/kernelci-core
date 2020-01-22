@@ -22,7 +22,8 @@ import sys
 from kernelci.cli import Args, Command, parse_args
 import kernelci.build
 import kernelci.config.build
-
+import sys
+from MyUtil import MyUtil
 
 class cmd_list_configs(Command):
     help = "List the build configurations"
@@ -39,7 +40,9 @@ class cmd_check_new_commit(Command):
 
     def __call__(self, configs, args):
         conf = configs['build_configs'][args.config]
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"")
         update = kernelci.build.check_new_commit(conf, args.storage)
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,")
         if update is False or update is True:
             return update
         print(update)

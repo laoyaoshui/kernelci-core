@@ -137,6 +137,9 @@ def check_new_commit(config, storage):
     """
     last_commit = get_last_commit(config, storage)
     branch_head = get_branch_head(config)
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(last_commit))
+    MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,str(branch_head))
+
     if not branch_head:
         return False
     elif last_commit == branch_head:
