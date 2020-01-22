@@ -680,8 +680,8 @@ node("") {
     env._LAB_JSON = "lab-info.json"
 
     def j = new Job()
-    def kci_core = "/var/lib/jenkins/workspace/monitor/kernelci-core"
-    def kdir = "/var/lib/jenkins/workspace/monitor/linux"
+    def kci_core = "${env.WORKSPACE}/kernelci-core"
+    def kdir = "${env.WORKSPACE}/linux"
     def checks = [:]
     def docker_image = null
 

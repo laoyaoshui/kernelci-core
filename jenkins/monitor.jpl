@@ -78,8 +78,8 @@ check_new_commit \
 
 node() {
     def j = new Job()
-    def kci_core = "/var/lib/jenkins/workspace/monitor/monitor/kernelci-core"
-    def trees_dir = "/var/lib/jenkins/workspace/monitor/monitor/trees"
+    def kci_core = env.WORKSPACE + '/kernelci-core'
+    def trees_dir = "${env.WORKSPACE}/trees"
     def docker_image = "${params.DOCKER_BASE}base"
     echo "=======yypp monitor 100000 "
     print("""\

@@ -110,9 +110,9 @@ submit \
 
 node("") {
     def j = new Job()
-    def kci_core = "$/var/lib/jenkins/workspace/monitor/kernelci-core"
-    def jobs_dir = "/var/lib/jenkins/workspace/monitor/jobs"
-    def artifacts = "/var/lib/jenkins/workspace/monitor/artifacts"
+    def kci_core = "${env.WORKSPACE}/kernelci-core"
+    def jobs_dir = "${env.WORKSPACE}/jobs"
+    def artifacts = "${env.WORKSPACE}/artifacts"
     def docker_image = "${params.DOCKER_BASE}base"
     def labs = params.LABS.tokenize(' ')
     def labs_submit = []
