@@ -281,7 +281,7 @@ def buildsComplete(job, opts, arch) {
 
 node("") {
     def j = new Job()
-    def kci_core = "/var/lib/kernelci-core"
+    def kci_core = "/var/lib/jenkins/kernelci-core"
     def kdir = "/var/configs/${params.BUILD_CONFIG}"
     def mirror = "/var/linux.git"
     def labs_info = "/var/labs"

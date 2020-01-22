@@ -119,7 +119,7 @@ publish_kernel \
 
 node(") {
     def j = new Job()
-    def kci_core = "/var/lib/kernelci-core"
+    def kci_core = "/var/lib/jenkins/kernelci-core"
     def kdir = "/var/linux"
     def docker_image = null
 
