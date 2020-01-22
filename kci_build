@@ -42,7 +42,7 @@ class cmd_check_new_commit(Command):
         conf = configs['build_configs'][args.config]
         MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"")
         update = kernelci.build.check_new_commit(conf, args.storage)
-        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,")
+        MyUtil.write_log(__file__,sys._getframe().f_lineno,__name__,"")
         if update is False or update is True:
             return update
         print(update)
