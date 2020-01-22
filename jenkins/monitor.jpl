@@ -121,7 +121,7 @@ node() {
                     echo "=======yypp monitor 100081 "
                 }
                 echo "=======yypp monitor 10009 "+config_jobs
-                parallel(config_jobs)
+                /*parallel(config_jobs)*/
                 echo "=======yypp monitor 10010 "
             }
         }
